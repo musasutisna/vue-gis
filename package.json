@@ -1,0 +1,26 @@
+{
+  "name": "@musasutisna/vue-gis",
+  "version": "1.0.0",
+  "description": "make easier developed map with vue and arcgis.js",
+  "main": "index.js",
+  "author": {
+    "name": "Musa Sutisna",
+    "email": "musa.sutisna@gmail.com",
+    "url": "https://github.com/musasutisna"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/musasutisna/vue-gis#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/musasutisna/vue-gis.git"
+  },
+  "keywords": [
+    "mikro-cms"
+  ],
+  "bugs": {
+    "url": "https://github.com/musasutisna/vue-gis/issues"
+  },
+  "dependencies": {
+    "@arcgis/core": "^4.30.8"
+  }
+}
