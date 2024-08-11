@@ -1,6 +1,6 @@
 {
   "name": "@musasutisna/vue-gis",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "make easier developed map with vue and arcgis.js",
   "main": "index.js",
   "author": {
@@ -21,6 +21,7 @@
     "url": "https://github.com/musasutisna/vue-gis/issues"
   },
   "dependencies": {
-    "@arcgis/core": "^4.30.8"
+    "@arcgis/core": "^4.30.8",
+    "axios": "^1.7.3"
   }
 }

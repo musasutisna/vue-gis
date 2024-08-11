@@ -14,7 +14,7 @@ after install completed next load map into your vue component
 
 ```
 <script setup>
-import { VueGIS } from 'vue-gis'
+import { VueGIS } from '@musasutisna/vue-gis'
 </script>
 
 <template>
@@ -36,6 +36,7 @@ window.config = {
   MAP_URL_GROUP_FILE: '/group.json'
   MAP_URL_BASEMAP_FILE: '/basemap.json'
   MAP_URL_LAYER_FILE: '/layer.json'
+  MAP_URL_LEGEND_FILE: '/legend.json'
 }
 ```
 
@@ -79,7 +80,7 @@ Make a base group for all our layer collection to help our developed all display
 | name| String | Name of group |
 | title | String | Title of group |
 | order | Integer | Ordering group number |
-| enable | Boolean | Set true to make group |
+| enable | Boolean | Set true to make group readable and false to skip group |
 | icon | String | Url to image icon of group |
 
 ## How to setup basemap (*basemap.json*)
@@ -117,7 +118,7 @@ A basemap is a background map layer that provides context and reference informat
     "enable": true,
     "default": true,
     "title": "OSM",
-    "type": "osm",
+    "type": "BasemapId",
     "BasemapId": "oceans"
   },
   {
@@ -213,7 +214,7 @@ A layer is a distinct collection of geographic data that is displayed and manage
 | title | String | The title of layer |
 | type | String | Type of layer (*GeojsonLayer*, *WMSLayer*, *MapImageLayer*) |
 | content | String | Type shown by layer (*image*, *line*, *point*) |
-| Permission | Array | The list permission allowed to *enable* the layer |
+| permission | Array | The list permission allowed to *enable* the layer |
 | zindex | Integer | The number of zindex layer |
 | main_order | Integer | The number of ordering main layer |
 | category_order | Integer | The number of ordering category layer |
@@ -221,6 +222,18 @@ A layer is a distinct collection of geographic data that is displayed and manage
 | GeojsonLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GeoJSONLayer.html |
 | WMTSLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-WMTSLayer.html |
 | MapImageLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-MapImageLayer.html |
+
+## How to setup legend (*legend.json*)
+
+A legend is a key that explains the symbols, colors, and patterns used on a map. It helps users understand what the various map elements represent, such as different types of roads, land use, water bodies, or elevation levels. Feel free to customize the legend format in these files.
+
+| Name | Type | Description |
+|:--|:--|:--|
+| title | String | The title of legend |
+| sub | Array | Collection of detailed legend items |
+| sub[].name | String | Name of the legend item |
+| sub[].symbol | String | URL to the symbol image |
+| sub[].desc | String | Detailed description of the legend item |
 
 ## Custom parameters
 
