@@ -12,7 +12,7 @@ export const useLayerStore = defineStore('vuegis_layer', () => {
   const src = ref({})
   const categories = ref({})
   const groups = ref({})
-  const sources = ref({})
+  const sources = {}
 
   /**
    * Load layer file from server then set as src.
@@ -65,10 +65,10 @@ export const useLayerStore = defineStore('vuegis_layer', () => {
   async function toggleLayer(layerId, force = null) {
     src.value[layerId].show = force !== null ? force : !src.value[layerId].show
 
-    if (sources.value[layerId]) {
-      sources.value[layerId].visible = src.value[layerId].show
+    if (sources[layerId]) {
+      sources[layerId].visible = src.value[layerId].show
     } else if (src.value[layerId].show) {
-      sources.value[layerId] = await map.toLoadLayer(src.value[layerId])
+      sources[layerId] = await map.toLoadLayer(src.value[layerId])
     }
   }
 
@@ -81,7 +81,7 @@ export const useLayerStore = defineStore('vuegis_layer', () => {
   async function toLoadEnableLayer() {
     for (var layerId in src.value) {
       if (src.value[layerId].show) {
-        sources.value[layerId] = await map.toLoadLayer(src.value[layerId])
+        sources[layerId] = await map.toLoadLayer(src.value[layerId])
       }
     }
   }
