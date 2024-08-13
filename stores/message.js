@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useMessageStore = defineStore('Message', () => {
+export const useMessageStore = defineStore('vuegis_message', () => {
   const loading = ref({
     display: false,
     text: null,
