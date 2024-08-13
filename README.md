@@ -243,17 +243,17 @@ Pre-processing custom parameters with supplied data and from executed method.
 "customParameters": {
   "property_one": {
     "@lib": "toString",
-    "@param": [{"one":1,"two":2,"there":3}, ":", ";"]
+    "@params": [{"one":1,"two":2,"there":3}, ":", ";"]
   },
   "propety_two": {
     "token": {
       "@lib": "sessionStorage",
-      "@param": ["token"]
+      "@params": ["token"]
     }
   },
   "property_there": "there"
   "property_four": "four",
-  "proeprty_five": { "$": "five" }
+  "property_five": { "$": "five" }
 }
 ```
 
@@ -269,7 +269,7 @@ will produces
 }
 ```
 
-that format "@lib" is fill with method name availble on libs and "@param" is the arguments will be pass into method and "$" to access custom data supplied by generate parameter and all property without format will be normaled values.
+that format "@lib" is fill with method name availble on libs and "@params" is the arguments will be pass into method and "$" to access custom data supplied by generate parameter and all property without format will be normaled values.
 
 ## Custom parameters @lib
 
@@ -316,8 +316,25 @@ Parameters
 | Name | Type | Description |
 |:-|:-|:-|
 | Items | Array \| Object | Items will be convert into string |
+| Prefix | String \| Boolean | Prefix value item |
+| Suffix | String \| Boolean | Suffix value item |
 | Assign | Boolean \| String | Assign value items with assign to index |
 | Sparator | Boolean \| String | Sparator to chain every item |
+
+```
+"customParameters": {
+  "property": {
+    "@lib": "toString",
+    "@params": [
+      { "one": 1, "two": 2, "there": 3},
+      "'",
+      "'",
+      "=",
+      ";"
+    ]
+  }
+}
+```
 
 ### @lib: cast
 
@@ -333,3 +350,33 @@ Parameters
 |:-|:-|:-|
 | Item | Mixed | Item will be type casting |
 | Type | String | The return type of item we want |
+
+### @lib: moment
+
+`moment.js` is a powerful JavaScript library used for parsing, validating, manipulating, and formatting dates. It simplifies working with dates in JavaScript by providing a consistent and intuitive API. Here’s a brief guide to interfacing with `moment.js` for common date operations.
+
+```
+Return: Mixed
+```
+
+Parameters
+
+| Name | Type | Description |
+|:-|:-|:-|
+| Datetime | String \| Boolean | The Datetime parameter will be passed to moment() |
+| Items | Object | A collection of moment methods to be called |
+
+```
+"customParameters": {
+  "date": {
+    "@lib": "moment",
+    "@params": [
+      false,
+      {
+        "utc": false,
+        "format": ["YYYY-MM-DD hh:mm:ss"]
+      }
+    ]
+  }
+}
+```
