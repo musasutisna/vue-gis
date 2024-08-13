@@ -6,8 +6,6 @@ import EsriWMTSLayer from '@arcgis/core/layers/WMTSLayer'
 import EsriGeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer'
 import EsriWMSLayer from '@arcgis/core/layers/WMSLayer'
 import EsriMapImageLayer from '@arcgis/core/layers/MapImageLayer'
-import EsriLocate from '@arcgis/core/widgets/Locate'
-import EsriScaleBar from '@arcgis/core/widgets/ScaleBar'
 import { useConfigStore } from './config'
 import { useCustomparamStore } from './customparam'
 
@@ -20,15 +18,11 @@ export const useMapStore = defineStore('vuegis_map', () => {
    *
    * @map         Instance of arcgis map.
    * @view        Instance of arcgis map viewer for interactive web map.
-   * @layers      Instance of arcgis map viewer for interactive web map.
-   * @hitResult   Current selected object point
-   * @location    Plugin to interact with location
+   * @layers      Collection instance of arcgis layer.
    */
   const arcgis = {
     map: null,
-    view: null,
-    hitResult: null,
-    location: null
+    view: null
   }
 
   /**
@@ -56,35 +50,6 @@ export const useMapStore = defineStore('vuegis_map', () => {
         components: [
           'attribution'
         ]
-      }
-    })
-
-    // Allow to interact with location
-    arcgis.location = new EsriLocate({
-      view: arcgis.view,
-      iconClass: 'esri-icon-navigation'
-    })
-
-    // Adding scalebar into map
-    const scaleBar = new EsriScaleBar({
-      view: arcgis.view,
-      visible: true,
-      unit: 'metric',
-      style: 'line'
-    })
-
-    arcgis.view.ui.add(scaleBar, {
-      position: 'bottom-left'
-    })
-
-    // Handling map events
-    arcgis.view.on('click', onClick)
-
-    arcgis.view.watch('updating', (updating) => {
-      if (updating) {
-        // in updating
-      } else {
-        // update completed
       }
     })
 
@@ -121,22 +86,6 @@ export const useMapStore = defineStore('vuegis_map', () => {
     } else if (basemapConfig.type === 'BasemapId') {
       return basemapConfig.BasemapId
     }
-  }
-
-  /**
-   * Events trigger when click.
-   *
-   * @param   object
-   * @return  void
-   */
-  function onClick(e) {
-    arcgis.view.hitTest(e).then(async (response) => {
-      const hitResult = response.results[0]
-
-      if (typeof hitResult !== 'undefined' && hitResult.type === 'graphic') {
-        arcgis.hitResult = hitResult
-      }
-    })
   }
 
   /**
@@ -201,12 +150,69 @@ export const useMapStore = defineStore('vuegis_map', () => {
     arcgis.map.remove(layerSource)
   }
 
+  /**
+   * To add widget into map view ui.
+   *
+   * @param   object
+   * @param   object
+   * @param   object
+   * @return  void
+   */
+  function toAddWidget(widget, config, options) {
+    config.view = arcgis.view
+
+    arcgis.view.ui.add(new widget(config), options)
+  }
+
+  /**
+   * To custom popup.
+   *
+   * @param   object
+   * @return  void
+   */
+  function toCustomPopup({ popupEnabled = false, dockEnabled = false, dockOptions = {} }) {
+    arcgis.view.popupEnabled = popupEnabled
+    arcgis.view.popup = {
+      dockEnabled,
+      dockOptions
+    }
+  }
+
+  /**
+   * To add event into map view.
+   *
+   * @param   string
+   * @param   function
+   * @return  void
+   */
+  function toAddEvent(eventName, cb) {
+    arcgis.view.on(eventName, function (e) {
+      cb(e, arcgis)
+    })
+  }
+
+  /**
+   * To add watch listener into map view.
+   *
+   * @param   string
+   * @param   function
+   * @return  void
+   */
+  function toAddWatch(eventName, cb) {
+    arcgis.view.watch(eventName, function (e) {
+      cb(e, arcgis)
+    })
+  }
+
   return {
-    arcgis,
     toInitMap,
     setBasemap,
     toLoadLayer,
     toAddLayer,
-    toRemoveLayer
+    toRemoveLayer,
+    toAddWidget,
+    toCustomPopup,
+    toAddEvent,
+    toAddWatch
   }
 })
