@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import moment from 'moment'
 
 export const useCustomparamStore = defineStore('vuegis_customparam', () => {
   /**
@@ -8,28 +9,30 @@ export const useCustomparamStore = defineStore('vuegis_customparam', () => {
     execute: (items, $data) => {
       let result = null
 
-      if (typeof items === 'object' && typeof items["@lib"] !== 'undefined') {
-        if (typeof items["@params"] !== 'undefined') {
-          const params = []
+      if (items !== null) {
+        if (typeof items === 'object' && typeof items["@lib"] !== 'undefined') {
+          if (typeof items["@params"] !== 'undefined') {
+            const params = []
 
-          for (var paramIndex in items["@params"]) {
-            params[paramIndex] = libs.execute(items["@params"][paramIndex], $data)
+            for (var paramIndex in items["@params"]) {
+              params[paramIndex] = libs.execute(items["@params"][paramIndex], $data)
+            }
+
+            result = libs[items["@lib"]](...(params))
+          } else {
+            result = libs[items["@lib"]]($data)
           }
+        } else if (typeof items === 'object' && typeof items["$"] !== 'undefined') {
+          result = $data[items["$"]]
+        } else if (typeof items === 'object') {
+          result = Array.isArray(items) ? [] : {}
 
-          result = libs[items["@lib"]](...(params))
+          for (var itemIndex in items) {
+            result[itemIndex] = libs.execute(items[itemIndex], $data)
+          }
         } else {
-          result = libs[items["@lib"]]($data)
+          result = items
         }
-      } else if (typeof items === 'object' && typeof items["$"] !== 'undefined') {
-        result = $data[items["$"]]
-      } else if (typeof items === 'object') {
-        result = Array.isArray(items) ? [] : {}
-
-        for (var itemIndex in items) {
-          result[itemIndex] = libs.execute(items[itemIndex], $data)
-        }
-      } else {
-        result = items
       }
 
       return result
@@ -40,19 +43,15 @@ export const useCustomparamStore = defineStore('vuegis_customparam', () => {
     sessionStorage: (name) => {
       return window.sessionStorage.getItem(name)
     },
-    toString: (items, assign = false, sparator = false) => {
+    toString: (items, prefix = false, suffix = false, assign = false, sparator = false) => {
       let result = ''
 
       for (var itemIndex in items) {
-        if (assign) {
-          result += `${itemIndex}=${items[itemIndex]}`
-        } else {
-          result += items[itemIndex]
-        }
-
         if (sparator) {
           result += sparator
         }
+
+        result += `${itemIndex}${assign || ''}${prefix || ''}${items[itemIndex]}${suffix || ''}`
       }
 
       return result
@@ -63,6 +62,21 @@ export const useCustomparamStore = defineStore('vuegis_customparam', () => {
       else if (type === 'string') return (item)?.toString || item
 
       return item
+    },
+    moment: (datetime, items) => {
+      let result = moment(datetime || undefined)
+
+      for (var momentMethod in items) {
+        if (result[momentMethod]) {
+          if (items[momentMethod]) {
+            result = result[momentMethod](...(items[momentMethod]))
+          } else {
+            result = result[momentMethod]()
+          }
+        }
+      }
+
+      return result
     }
   }
 

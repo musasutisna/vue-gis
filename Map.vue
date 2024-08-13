@@ -8,6 +8,8 @@ import { useLayerStore } from './stores/layer.js'
 import { useLegendStore } from './stores/legend.js'
 import { useMapStore } from './stores/map.js'
 
+const emit = defineEmits(['ready'])
+
 const config = useConfigStore()
 const category = useCategoryStore()
 const group = useGroupStore()
@@ -27,11 +29,13 @@ onMounted(async () => {
   await basemap.toLoadDefaultBasemap()
   await layer.toLoadEnableLayer()
   await legend.toLoadLegendFile()
+
+  emit('ready')
 })
 </script>
 
 <template>
-  <div class="w-full h-full">
+  <div style="width: 100%;height: 100%;">
     <div ref="domMap"></div>
   </div>
 </template>
