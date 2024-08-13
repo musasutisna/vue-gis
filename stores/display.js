@@ -1,7 +1,7 @@
 import { reactive } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useDisplayStore = defineStore('Display', () => {
+export const useDisplayStore = defineStore('vuegis_display', () => {
   const list = reactive({})
 
   function toggle(key, force = null) {
