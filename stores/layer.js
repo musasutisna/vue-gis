@@ -86,10 +86,40 @@ export const useLayerStore = defineStore('vuegis_layer', () => {
     }
   }
 
+  /**
+   * Searching feature on layer.
+   *
+   * @param   string
+   * @param   object
+   * @param   function
+   * @return  mixed
+   */
+  async function toSearch(layerId, query, cb) {
+    if (sources[layerId]) {
+      try {
+        sources[layerId].queryFeatureCount(query)
+          .then((resultNum) => {
+            sources[layerId].queryFeatures(query)
+              .then((resultObj) => {
+                cb(resultNum, resultObj)
+              })
+          })
+      } catch (err) {
+        console.error(
+          'vuegis.stores.layer.toSearch: ',
+          `could not perform search on layer ${layerId}`
+        )
+
+        cb(null)
+      }
+    }
+  }
+
   return {
     src,
     toLoadLayerFile,
     toggleLayer,
-    toLoadEnableLayer
+    toLoadEnableLayer,
+    toSearch
   }
 })

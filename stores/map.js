@@ -204,6 +204,17 @@ export const useMapStore = defineStore('vuegis_map', () => {
     })
   }
 
+  /**
+   * Move view to target.
+   *
+   * @param   object
+   * @param   object
+   * @return  void
+   */
+  function toGoTo(target, options) {
+    arcgis.view.goTo(target, options)
+  }
+
   return {
     toInitMap,
     setBasemap,
@@ -213,6 +224,7 @@ export const useMapStore = defineStore('vuegis_map', () => {
     toAddWidget,
     toCustomPopup,
     toAddEvent,
-    toAddWatch
+    toAddWatch,
+    toGoTo
   }
 })
