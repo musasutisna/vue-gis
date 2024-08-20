@@ -18,23 +18,21 @@ export const useBasemapStore = defineStore('vuegis_basemap', () => {
    *
    * @return  void
    */
-  async function toLoadBasemapFile() {
+  async function toLoadBasemapFile(basemapFile) {
     message.toToggleLoading({
       text: 'load basemap'
     })
 
-    const resultBasemap = await configAPI.apiGET(window.config.MAP_URL_BASEMAP_FILE)
+    const resultBasemap = await configAPI.apiGET(basemapFile)
 
     if (resultBasemap && Array.isArray(resultBasemap.data)) {
-      src.value = {}
-
       for (var basemap of resultBasemap.data) {
         src.value[basemap.id] = basemap
       }
     } else {
       console.error(
         'vuegis.stores.config.toLoadBasemapFile: ',
-        `could not load basemap file ${window.config.MAP_URL_BASEMAP_FILE}`
+        `could not load basemap file ${basemapFile}`
       )
     }
 

@@ -66,7 +66,7 @@ export const useMapStore = defineStore('vuegis_map', () => {
    * @param   object
    * @return  void
    */
-  async function setBasemap (basemapConfig) {
+  async function setBasemap(basemapConfig) {
     arcgis.map.basemap = await toLoadBasemap(basemapConfig)
   }
 
@@ -76,7 +76,7 @@ export const useMapStore = defineStore('vuegis_map', () => {
    * @param   object
    * @return  mixed
    */
-  async function toLoadBasemap (basemapConfig) {
+  async function toLoadBasemap(basemapConfig) {
     if (basemapConfig.type === 'WMTSLayer') {
       return new EsriBasemap({
         baseLayers: [
@@ -92,29 +92,39 @@ export const useMapStore = defineStore('vuegis_map', () => {
    * To load layer and add into map.
    *
    * @param   object
+   * @param   object
    * @return  object
    */
-  async function toLoadLayer (layerConfig) {
+  async function toLoadLayer(layerConfig, $data = {}) {
     let layerSource = null
 
     if (layerConfig.type === 'GeojsonLayer') {
       const config = {
         ...layerConfig.GeojsonLayer,
-        customParameters: customparam.generate(layerConfig.GeojsonLayer.customParameters)
+        customParameters: customparam.generate(
+          layerConfig.GeojsonLayer.customParameters,
+          $data
+        )
       }
 
       layerSource = new EsriGeoJSONLayer(config)
     } else if (layerConfig.type === 'WMSLayer') {
       const config = {
         ...layerConfig.WMSLayer,
-        customParameters: customparam.generate(layerConfig.WMSLayer.customParameters)
+        customParameters: customparam.generate(
+          layerConfig.WMSLayer.customParameters,
+          $data
+        )
       }
 
       layerSource = new EsriWMSLayer(config)
     } else if (layerConfig.type === 'MapImageLayer') {
       const config = {
         ...layerConfig.MapImageLayer,
-        customParameters: customparam.generate(layerConfig.MapImageLayer.customParameters)
+        customParameters: customparam.generate(
+          layerConfig.MapImageLayer.customParameters,
+          $data
+        )
       }
 
       layerSource = new EsriMapImageLayer(config)
@@ -136,7 +146,7 @@ export const useMapStore = defineStore('vuegis_map', () => {
    * @param   number
    * @return  void
    */
-  function toAddLayer (layerSource, zindex = null) {
+  function toAddLayer(layerSource, zindex = null) {
     arcgis.map.add(layerSource, zindex)
   }
 
@@ -146,7 +156,7 @@ export const useMapStore = defineStore('vuegis_map', () => {
    * @param   object
    * @return  void
    */
-  function toRemoveLayer (layerSource) {
+  function toRemoveLayer(layerSource) {
     arcgis.map.remove(layerSource)
   }
 

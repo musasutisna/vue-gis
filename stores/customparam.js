@@ -45,13 +45,15 @@ export const useCustomparamStore = defineStore('vuegis_customparam', () => {
     },
     toString: (items, prefix = false, suffix = false, assign = false, sparator = false) => {
       let result = ''
+      let total = 0
 
       for (var itemIndex in items) {
-        if (sparator) {
+        if (sparator && total > 0) {
           result += sparator
         }
 
         result += `${itemIndex}${assign || ''}${prefix || ''}${items[itemIndex]}${suffix || ''}`
+        total += 1
       }
 
       return result

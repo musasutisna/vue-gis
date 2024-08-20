@@ -9,6 +9,7 @@ export const useLayerStore = defineStore('vuegis_layer', () => {
   const configAPI = useConfigAPI()
   const map = useMapStore()
 
+  const caches = {}
   const src = ref({})
   const categories = ref({})
   const groups = ref({})
@@ -17,58 +18,106 @@ export const useLayerStore = defineStore('vuegis_layer', () => {
   /**
    * Load layer file from server then set as src.
    *
+   * @param   string
+   * @param   mixed
    * @return  void
    */
-  async function toLoadLayerFile() {
+  async function toLoadLayerFile(layerFile, layerOverride = null) {
     message.toToggleLoading({
       text: 'load map layers'
     })
 
-    const resultLayer = await configAPI.apiGET(window.config.MAP_URL_LAYER_FILE)
+    let layers = {}
 
-    if (resultLayer && Array.isArray(resultLayer.data)) {
-      src.value = {}
+    if (typeof caches[layerFile] === 'undefined') {
+      const resultLayer = await configAPI.apiGET(layerFile)
 
-      for (var layer of resultLayer.data) {
-        if (!layer.enable) continue
-
-        if (typeof categories.value[layer.category] === 'undefined') {
-          categories.value[layer.category] = []
-        }
-
-        if (typeof groups.value[layer.group] === 'undefined') {
-          groups.value[layer.group] = []
-        }
-
-        src.value[layer.id] = layer
-
-        categories.value[layer.category][layer.category_order] = layer
-        groups.value[layer.group][layer.group_order] = layer
+      if (resultLayer && Array.isArray(resultLayer.data)) {
+        layers = resultLayer.data
+      } else {
+        console.error(
+          'vuegis.stores.config.toLoadLayerFile: ',
+          `could not load layer file ${layerFile}`
+        )
       }
     } else {
-      console.error(
-        'vuegis.stores.config.toLoadLayerFile: ',
-        `could not load layer file ${window.config.MAP_URL_LAYER_FILE}`
-      )
+      layers = caches[layerFile]
+    }
+
+    for (var l of layers) {
+      let layer = {}
+
+      if (layerOverride !== null) {
+        if (typeof layerOverride[l.id] !== 'undefined') {
+          layer = override(l, layerOverride[l.id])
+        }
+      } else {
+        layer = { ...l }
+      }
+
+      if (!layer.enable) continue
+
+      if (typeof categories.value[layer.category] === 'undefined') {
+        categories.value[layer.category] = []
+      }
+
+      if (typeof groups.value[layer.group] === 'undefined') {
+        groups.value[layer.group] = []
+      }
+
+      src.value[layer.id] = layer
+
+      categories.value[layer.category][layer.category_order] = layer
+      groups.value[layer.group][layer.group_order] = layer
     }
 
     message.toToggleLoading({ display: false })
   }
 
   /**
+   * Override layer config.
+   *
+   * @param   object
+   * @param   object
+   * @return  object
+   */
+  function override(layer, layerOverride) {
+    for (var overrideIndex in layerOverride) {
+      if (typeof layerOverride[overrideIndex] === 'object' &&
+        layerOverride[overrideIndex] !== null) {
+        layer[overrideIndex] = override(layer[overrideIndex], layerOverride[overrideIndex])
+      } else {
+        layer[overrideIndex] = layerOverride[overrideIndex]
+      }
+    }
+
+    return layer
+  }
+
+  /**
    * Toggle visible selected layer or load if source not exists.
    *
-   * @param   number
-   * @param   boolean
+   * @param   object
    * @return  void
    */
-  async function toggleLayer(layerId, force = null) {
+  async function toggleLayer({
+    layerId = null,
+    force = null,
+    $data = {},
+    when = null
+  }) {
     src.value[layerId].show = force !== null ? force : !src.value[layerId].show
 
     if (sources[layerId]) {
       sources[layerId].visible = src.value[layerId].show
     } else if (src.value[layerId].show) {
-      sources[layerId] = await map.toLoadLayer(src.value[layerId])
+      sources[layerId] = await map.toLoadLayer(src.value[layerId], $data)
+
+      if (when !== null &&
+        typeof when.callback !== 'undefined' &&
+        when.errback !== 'undefined') {
+        sources[layerId].when(when.callback, when.errback)
+      }
     }
   }
 
@@ -83,6 +132,37 @@ export const useLayerStore = defineStore('vuegis_layer', () => {
       if (src.value[layerId].show) {
         sources[layerId] = await map.toLoadLayer(src.value[layerId])
       }
+    }
+  }
+
+  /**
+   * To remove layer source and from map view.
+   *
+   * @param   string
+   * @return  void
+   */
+  function toRemoveLayer(layerId) {
+    let layerCategory = src.value[layerId].category
+    let layerCategoryOrder = src.value[layerId].category_order
+    let layerGroup = src.value[layerId].group
+    let layerGroupOrder = src.value[layerId].group_order
+
+    delete src.value[layerId]
+    delete categories.value[layerCategory].splice(layerCategoryOrder, 1)
+    delete groups.value[layerGroup].splice(layerGroupOrder, 1)
+
+    if (categories.value[layerCategory].length < 1) {
+      delete categories.value[layerCategory]
+    }
+
+    if (groups.value[layerGroup].length < 1) {
+      delete groups.value[layerGroup]
+    }
+
+    if (typeof sources[layerId] !== 'undefined') {
+      map.toRemoveLayer(sources[layerId])
+
+      delete sources[layerId]
     }
   }
 
@@ -120,6 +200,7 @@ export const useLayerStore = defineStore('vuegis_layer', () => {
     toLoadLayerFile,
     toggleLayer,
     toLoadEnableLayer,
+    toRemoveLayer,
     toSearch
   }
 })
