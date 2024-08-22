@@ -6,6 +6,7 @@ import EsriWMTSLayer from '@arcgis/core/layers/WMTSLayer'
 import EsriGeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer'
 import EsriWMSLayer from '@arcgis/core/layers/WMSLayer'
 import EsriMapImageLayer from '@arcgis/core/layers/MapImageLayer'
+import EsriGraphicsLayer from '@arcgis/core/layers/GraphicsLayer'
 import { useConfigStore } from './config'
 import { useCustomparamStore } from './customparam'
 
@@ -18,11 +19,12 @@ export const useMapStore = defineStore('vuegis_map', () => {
    *
    * @map         Instance of arcgis map.
    * @view        Instance of arcgis map viewer for interactive web map.
-   * @layers      Collection instance of arcgis layer.
+   * @widgets     Collection instance of arcgis widget.
    */
   const arcgis = {
     map: null,
-    view: null
+    view: null,
+    widgets: {}
   }
 
   /**
@@ -128,6 +130,12 @@ export const useMapStore = defineStore('vuegis_map', () => {
       }
 
       layerSource = new EsriMapImageLayer(config)
+    } else if (layerConfig.type === 'GraphicsLayer') {
+      const config = {
+        ...layerConfig.GraphicsLayer
+      }
+
+      layerSource = new EsriGraphicsLayer(config)
     }
 
     if (layerSource) {
@@ -164,14 +172,36 @@ export const useMapStore = defineStore('vuegis_map', () => {
    * To add widget into map view ui.
    *
    * @param   object
-   * @param   object
-   * @param   object
+   * @return  mixed
+   */
+  function toAddWidget({
+    id = null,
+    widget = null,
+    config = {},
+    options = {}
+  }) {
+    if (widget) {
+      config.view = arcgis.view
+      arcgis.widgets[id] = new widget(config)
+  
+      arcgis.view.ui.add(arcgis.widgets[id], options)
+
+      return arcgis.widgets[id]
+    }
+
+    return null
+  }
+
+  /**
+   * To remove widget from map view ui.
+   *
+   * @param   string
    * @return  void
    */
-  function toAddWidget(widget, config, options) {
-    config.view = arcgis.view
+  function toRemoveWidget(widgetId) {
+    arcgis.view.ui.remove(arcgis.widgets[widgetId])
 
-    arcgis.view.ui.add(new widget(config), options)
+    delete arcgis.widgets[widgetId]
   }
 
   /**
@@ -225,6 +255,28 @@ export const useMapStore = defineStore('vuegis_map', () => {
     arcgis.view.goTo(target, options)
   }
 
+  /**
+   * Interact with view method.
+   *
+   * @param   string
+   * @param   object
+   * @return  mixed
+   */
+  function toViewMethod(method, args = []) {
+    return arcgis.view[method](...(args))
+  }
+
+  /**
+   * Interact with view ui method.
+   *
+   * @param   string
+   * @param   object
+   * @return  mixed
+   */
+  function toUIMethod(method, args = []) {
+    return arcgis.view.ui[method](...(args))
+  }
+
   return {
     toInitMap,
     setBasemap,
@@ -232,9 +284,12 @@ export const useMapStore = defineStore('vuegis_map', () => {
     toAddLayer,
     toRemoveLayer,
     toAddWidget,
+    toRemoveWidget,
     toCustomPopup,
     toAddEvent,
     toAddWatch,
-    toGoTo
+    toGoTo,
+    toViewMethod,
+    toUIMethod
   }
 })
