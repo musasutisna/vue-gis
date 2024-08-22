@@ -98,13 +98,12 @@ export const useLayerStore = defineStore('vuegis_layer', () => {
    * Toggle visible selected layer or load if source not exists.
    *
    * @param   object
-   * @return  void
+   * @return  object
    */
   async function toggleLayer({
     layerId = null,
     force = null,
-    $data = {},
-    when = null
+    $data = {}
   }) {
     src.value[layerId].show = force !== null ? force : !src.value[layerId].show
 
@@ -112,13 +111,9 @@ export const useLayerStore = defineStore('vuegis_layer', () => {
       sources[layerId].visible = src.value[layerId].show
     } else if (src.value[layerId].show) {
       sources[layerId] = await map.toLoadLayer(src.value[layerId], $data)
-
-      if (when !== null &&
-        typeof when.callback !== 'undefined' &&
-        when.errback !== 'undefined') {
-        sources[layerId].when(when.callback, when.errback)
-      }
     }
+
+    return sources[layerId]
   }
 
   /**
