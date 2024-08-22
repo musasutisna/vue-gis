@@ -224,6 +224,7 @@ A layer is a distinct collection of geographic data that is displayed and manage
 | category_order | Integer | The number of ordering category layer |
 | group_order | Integer | The number of ordering group layer |
 | GeojsonLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GeoJSONLayer.html |
+| GraphicsLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html |
 | WMTSLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-WMTSLayer.html |
 | MapImageLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-MapImageLayer.html |
 
