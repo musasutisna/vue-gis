@@ -32,7 +32,7 @@ function mapReady() {
 
 All configuration we setup inside a file json, all files is located by default at **src/public** in your vue directory. Create a new directory with name **map** to collected all setting files, in other hand all files located can be customize by override with these config
 
-```
+```js
 window.config = {
   MAP_URL_CONFIG: '/map',
   MAP_URL_CONFIG_FILE: '/config.json'
@@ -48,7 +48,7 @@ window.config = {
 
 config is how we control map display running
 
-```
+```js
 {
   "zoom": 5,
   "scale": 18000000,
@@ -91,7 +91,7 @@ Make a base group for all our layer collection to help our developed all display
 
 A basemap is a background map layer that provides context and reference information for the primary data being displayed on a map, these a example free basemap hosted by ArcGIS
 
-```
+```js
 [
   {
     "id": 1,
@@ -224,9 +224,9 @@ A layer is a distinct collection of geographic data that is displayed and manage
 | category_order | Integer | The number of ordering category layer |
 | group_order | Integer | The number of ordering group layer |
 | GeojsonLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GeoJSONLayer.html |
-| GraphicsLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html |
 | WMTSLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-WMTSLayer.html |
 | MapImageLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-MapImageLayer.html |
+| GraphicsLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html |
 
 ## How to setup legend (*legend.json*)
 
@@ -244,7 +244,7 @@ A legend is a key that explains the symbols, colors, and patterns used on a map.
 
 Pre-processing custom parameters with supplied data and from executed method.
 
-```
+```js
 "customParameters": {
   "property_one": {
     "@lib": "toString",
@@ -264,9 +264,9 @@ Pre-processing custom parameters with supplied data and from executed method.
 
 will produces
 
-```
+```js
 "customParameters": {
-  "property_one": "one=1;two=2;there=3;",
+  "property_one": "one=1;two=2;there=3",
   "property_two": "token saved in session storage",
   "property_there": "there",
   "property_four": "four",
@@ -326,7 +326,7 @@ Parameters
 | Assign | Boolean \| String | Assign value items with assign to index |
 | Sparator | Boolean \| String | Sparator to chain every item |
 
-```
+```js
 "customParameters": {
   "property": {
     "@lib": "toString",
@@ -371,7 +371,7 @@ Parameters
 | Datetime | String \| Boolean | The Datetime parameter will be passed to moment() |
 | Items | Object | A collection of moment methods to be called |
 
-```
+```js
 "customParameters": {
   "date": {
     "@lib": "moment",

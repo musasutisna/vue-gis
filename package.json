@@ -1,6 +1,6 @@
 {
   "name": "@musasutisna/vue-gis",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "make easier developed map with vue and arcgis.js",
   "main": "index.js",
   "author": {
@@ -23,6 +23,7 @@
   "dependencies": {
     "@arcgis/core": "^4.30.8",
     "axios": "^1.7.3",
-    "moment": "^2.30.1"
+    "moment": "^2.30.1",
+    "vue": "^3.4.38"
   }
 }
