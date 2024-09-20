@@ -58,9 +58,9 @@ config is how we control map display running
 
 | Name | Type | Description |
 |:--|:--|:--|
-| zoom | Integer | Zoom level of map |
-| scale | Integer | Scale level of map |
-| center | Array | Central point of map |
+| zoom | Integer | Zoom level of map. |
+| scale | Integer | Scale level of map. |
+| center | Array | Central point of map. |
 
 ## Categorizing Layer (*category.js*)
 
@@ -68,11 +68,11 @@ Make a base category for all our layer collection to help our developed all disp
 
 | Name | Type | Description |
 |:--|:--|:--|
-| id | Integer | Unique id of category |
-| name| String | Name of category |
-| title | String | Title of category |
-| order | Integer | Ordering category number |
-| enable | Boolean | Set true to make category readable and false to skip category |
+| id | Integer | Unique id of category. |
+| name| String | Name of category. |
+| title | String | Title of category. |
+| order | Integer | Ordering category number. |
+| enable | Boolean | Set true to make category readable and false to skip category. |
 
 ## Grouping Layer (*group.js*)
 
@@ -80,12 +80,12 @@ Make a base group for all our layer collection to help our developed all display
 
 | Name | Type | Description |
 |:--|:--|:--|
-| id | Integer | Unique id of group |
-| name| String | Name of group |
-| title | String | Title of group |
-| order | Integer | Ordering group number |
-| enable | Boolean | Set true to make group readable and false to skip group |
-| icon | String | Url to image icon of group |
+| id | Integer | Unique id of group. |
+| name| String | Name of group. |
+| title | String | Title of group. |
+| order | Integer | Ordering group number. |
+| enable | Boolean | Set true to make group readable and false to skip group. |
+| icon | String | Url to image icon of group. |
 
 ## How to setup basemap (*basemap.json*)
 
@@ -196,11 +196,11 @@ Every item in basemap have a structure with this description
 
 | Name | Type | Description |
 |:--|:--|:--|
-| id | Integer | Unique id of basemap layer |
-| enable | Boolean | Set true to make basemap readable and false to skip basemap |
-| default | Boolean | Set true to make a basemap as active layer on initial load |
-| title | String | The title of basemap |
-| type | String | Type of basemap (*BasemapId*, *WMTSLayer*) |
+| id | Integer | Unique id of basemap layer. |
+| enable | Boolean | Set true to make basemap readable and false to skip basemap. |
+| default | Boolean | Set true to make a basemap as active layer on initial load. |
+| title | String | The title of basemap. |
+| type | String | Type of basemap (*BasemapId*, *WMTSLayer*). |
 | BasemapId | String | https://developers.arcgis.com/javascript/latest/api-reference/esri-Map.html#basemap |
 | WMTSLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-WMTSLayer.html#properties-summary |
 
@@ -210,19 +210,19 @@ A layer is a distinct collection of geographic data that is displayed and manage
 
 | Name | Type | Description |
 |:--|:--|:--|
-| id | Integer | unique id of layer |
-| category | String | Category of layer, selected one available in **category.json** |
-| group | String | Group of layer, selected one available in **group.json** |
-| enable | Boolean | Set true to make layer readable and false to skip layer |
-| show | Boolean | Set true to make a layer initial load |
-| title | String | The title of layer |
-| type | String | Type of layer (*GeojsonLayer*, *WMSLayer*, *MapImageLayer*) |
-| content | String | Type shown by layer (*image*, *line*, *point*) |
-| permission | Array | The list permission allowed to *enable* the layer |
-| zindex | Integer | The number of zindex layer |
-| main_order | Integer | The number of ordering main layer |
-| category_order | Integer | The number of ordering category layer |
-| group_order | Integer | The number of ordering group layer |
+| id | Integer | unique id of layer. |
+| category | String | Category of layer, selected one available in **category.json**. |
+| group | String | Group of layer, selected one available in **group.json**. |
+| enable | Boolean | Set true to make layer readable and false to skip layer. |
+| show | Boolean | Set true to make a layer initial load. |
+| title | String | The title of layer. |
+| type | String | Type of layer (*GeojsonLayer*, *WMSLayer*, *MapImageLayer*). |
+| content | String | Type shown by layer (*image*, *line*, *point*). |
+| permission | Array | The list permission allowed to *enable* the layer. |
+| zindex | Integer | The number of zindex layer. |
+| main_order | Integer | The number of ordering main layer. |
+| category_order | Integer | The number of ordering category layer. |
+| group_order | Integer | The number of ordering group layer. |
 | GeojsonLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GeoJSONLayer.html |
 | WMTSLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-WMTSLayer.html |
 | MapImageLayer | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-MapImageLayer.html |
@@ -234,11 +234,11 @@ A legend is a key that explains the symbols, colors, and patterns used on a map.
 
 | Name | Type | Description |
 |:--|:--|:--|
-| title | String | The title of legend |
-| sub | Array | Collection of detailed legend items |
-| sub[].name | String | Name of the legend item |
-| sub[].symbol | String | URL to the symbol image |
-| sub[].desc | String | Detailed description of the legend item |
+| title | String | The title of legend. |
+| sub | Array | Collection of detailed legend items. |
+| sub[].name | String | Name of the legend item. |
+| sub[].symbol | String | URL to the symbol image. |
+| sub[].desc | String | Detailed description of the legend item. |
 
 ## Custom parameters
 
@@ -292,7 +292,7 @@ Parameters
 
 | Name | Type | Description |
 |:-|:-|:-|
-| Name | String | The key will be get on localStorage |
+| Name | String | The key will be get on localStorage. |
 
 ### @lib: sessionStorage
 
@@ -306,7 +306,7 @@ Parameters
 
 | Name | Type | Description |
 |:-|:-|:-|
-| Name | String | The key will be get on sessionStorage |
+| Name | String | The key will be get on sessionStorage. |
 
 ### @lib: toString
 
@@ -320,11 +320,11 @@ Parameters
 
 | Name | Type | Description |
 |:-|:-|:-|
-| Items | Array \| Object | Items will be convert into string |
-| Prefix | String \| Boolean | Prefix value item |
-| Suffix | String \| Boolean | Suffix value item |
-| Assign | Boolean \| String | Assign value items with assign to index |
-| Sparator | Boolean \| String | Sparator to chain every item |
+| Items | Array \| Object | Items will be convert into string. |
+| Prefix | String \| Boolean | Prefix value item. |
+| Suffix | String \| Boolean | Suffix value item. |
+| Assign | Boolean \| String | Assign value items with assign to index. |
+| Sparator | Boolean \| String | Sparator to chain every item. |
 
 ```js
 "customParameters": {
@@ -353,8 +353,8 @@ Parameters
 
 | Name | Type | Description |
 |:-|:-|:-|
-| Item | Mixed | Item will be type casting |
-| Type | String | The return type of item we want |
+| Item | Mixed | Item will be type casting. |
+| Type | String | The return type of item we want. |
 
 ### @lib: moment
 
@@ -368,8 +368,8 @@ Parameters
 
 | Name | Type | Description |
 |:-|:-|:-|
-| Datetime | String \| Boolean | The Datetime parameter will be passed to moment() |
-| Items | Object | A collection of moment methods to be called |
+| Datetime | String \| Boolean | The Datetime parameter will be passed to moment(). |
+| Items | Object | A collection of moment methods to be called. |
 
 ```js
 "customParameters": {
@@ -380,6 +380,37 @@ Parameters
       {
         "utc": false,
         "format": ["YYYY-MM-DD hh:mm:ss"]
+      }
+    ]
+  }
+}
+```
+
+### @lib: replace
+
+Replace placeholders in a string using key-value pairs from an object by utilizing the `replace` method with the regular expression `/{(.*?)}/g`.
+
+```
+Return: String
+```
+
+Parameters
+
+| Name | Type | Description |
+|:-|:-|:-|
+| subject | String | The subject string will be replaced with key-value pairs. |
+| haystack | Object | A collection of haystacks contains key-value pairs. |
+
+```js
+"customParameters": {
+  "CQL_FILTER": {
+    "@lib": "replace",
+    "@params": [
+      "created_date DURING ('{start}', '{end}') AND status = '{status}'",
+      {
+        "start": { "$": "startDatetime" },
+        "end": { "$": "endDatetime" },
+        "status": "active"
       }
     ]
   }
