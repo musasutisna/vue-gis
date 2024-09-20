@@ -79,6 +79,14 @@ export const useCustomparamStore = defineStore('vuegis_customparam', () => {
       }
 
       return result
+    },
+    replace: (subject, haystack) => {
+      return subject.replace(
+        /{(.*?)}/g,
+        (match, key) => {
+          return haystack[key] || match
+        }
+      )
     }
   }
 
