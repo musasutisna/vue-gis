@@ -36,7 +36,7 @@ export const useLayerStore = defineStore('vuegis_layer', () => {
         layers = resultLayer.data
       } else {
         console.error(
-          'vuegis.stores.config.toLoadLayerFile: ',
+          'vuegis.stores.layer.toLoadLayerFile: ',
           `could not load layer file ${layerFile}`
         )
       }

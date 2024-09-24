@@ -29,7 +29,7 @@ export const useLegendStore = defineStore('vuegis_legend', () => {
       }
     } else {
       console.error(
-        'vuegis.stores.config.toLoadLegendFile: ',
+        'vuegis.stores.legend.toLoadLegendFile: ',
         `could not load legend file ${window.config.MAP_URL_LEGEND_FILE}`
       )
     }

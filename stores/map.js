@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import EsriConfig from '@arcgis/core/config'
 import EsriMap from '@arcgis/core/Map'
 import EsriMapView from '@arcgis/core/views/MapView'
 import EsriBasemap from '@arcgis/core/Basemap'
@@ -34,6 +35,19 @@ export const useMapStore = defineStore('vuegis_map', () => {
    * @return  void
    */
   async function toInitMap(domMap) {
+    // setup esri config
+    if (config.src.EsriConfig) {
+      config.src.EsriConfig = customparam.generate(config.src.EsriConfig, {})
+
+      for (var esriConfigProp in config.src.EsriConfig) {
+        if (config.handler[esriConfigProp]) {
+          config.handler[esriConfigProp](EsriConfig, config.src.EsriConfig[esriConfigProp])
+        } else {
+          EsriConfig[esriConfigProp] = config.src.EsriConfig[esriConfigProp]
+        }
+      }
+    }
+
     // set map width by actual parent map
     domMap.style.width = `${domMap.parentNode.offsetWidth}px`
     domMap.style.height = `${domMap.parentNode.offsetHeight}px`
@@ -45,9 +59,9 @@ export const useMapStore = defineStore('vuegis_map', () => {
     arcgis.view = new EsriMapView({
       container: domMap,
       map: arcgis.map,
-      zoom: config.src.zoom,
-      scale: config.src.scale,
-      center: config.src.center,
+      zoom: config.src.MapView.zoom,
+      scale: config.src.MapView.scale,
+      center: config.src.MapView.center,
       ui: {
         components: [
           'attribution'
@@ -102,8 +116,11 @@ export const useMapStore = defineStore('vuegis_map', () => {
 
     if (layerConfig.type === 'GeojsonLayer') {
       const config = {
-        ...layerConfig.GeojsonLayer,
-        customParameters: customparam.generate(
+        ...layerConfig.GeojsonLayer
+      }
+
+      if (layerConfig.GeojsonLayer.customParameters) {
+        config.customParameters = customparam.generate(
           layerConfig.GeojsonLayer.customParameters,
           $data
         )
@@ -112,8 +129,11 @@ export const useMapStore = defineStore('vuegis_map', () => {
       layerSource = new EsriGeoJSONLayer(config)
     } else if (layerConfig.type === 'WMSLayer') {
       const config = {
-        ...layerConfig.WMSLayer,
-        customParameters: customparam.generate(
+        ...layerConfig.WMSLayer
+      }
+
+      if (layerConfig.WMSLayer.customParameters) {
+        config.customParameters = customparam.generate(
           layerConfig.WMSLayer.customParameters,
           $data
         )
@@ -122,8 +142,11 @@ export const useMapStore = defineStore('vuegis_map', () => {
       layerSource = new EsriWMSLayer(config)
     } else if (layerConfig.type === 'MapImageLayer') {
       const config = {
-        ...layerConfig.MapImageLayer,
-        customParameters: customparam.generate(
+        ...layerConfig.MapImageLayer
+      }
+
+      if (layerConfig.MapImageLayer.customParameters) {
+        config.customParameters = customparam.generate(
           layerConfig.MapImageLayer.customParameters,
           $data
         )

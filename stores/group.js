@@ -29,7 +29,7 @@ export const useGroupStore = defineStore('vuegis_group', () => {
       }
     } else {
       console.error(
-        'vuegis.stores.config.toLoadGroupFile: ',
+        'vuegis.stores.group.toLoadGroupFile: ',
         `could not load group file ${window.config.MAP_URL_GROUP_FILE}`
       )
     }

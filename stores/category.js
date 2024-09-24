@@ -29,7 +29,7 @@ export const useCategoryStore = defineStore('vuegis_category', () => {
       }
     } else {
       console.error(
-        'vuegis.stores.config.toLoadCategoryFile: ',
+        'vuegis.stores.category.toLoadCategoryFile: ',
         `could not load category file ${window.config.MAP_URL_CATEGORY_FILE}`
       )
     }
