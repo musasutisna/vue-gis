@@ -23,7 +23,7 @@ onMounted(async () => {
   await config.toLoadConfigFile()
   await category.toLoadCategoryFile()
   await group.toLoadGroupFile()
-  await basemap.toLoadBasemapFile(window.config.MAP_URL_BASEMAP_FILE)
+  await basemap.toLoadBasemapFile()
   await layer.toLoadLayerFile(window.config.MAP_URL_LAYER_FILE)
   await map.toInitMap(domMap.value)
   await basemap.toLoadDefaultBasemap()

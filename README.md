@@ -46,21 +46,46 @@ window.config = {
 
 ## How to config (*config.json*)
 
-config is how we control map display running
+Configure the global properties of the library and manage the map display settings.
 
 ```js
 {
-  "zoom": 5,
-  "scale": 18000000,
-  "center": [113.9213, -0.7893]
+  "EsriConfig": {
+    // available esri config properties
+  },
+  "MapView": {
+    "zoom": 5,
+    "scale": 18000000,
+    "center": [113.9213, -0.7893]
+  }
 }
 ```
 
 | Name | Type | Description |
 |:--|:--|:--|
-| zoom | Integer | Zoom level of map. |
-| scale | Integer | Scale level of map. |
-| center | Array | Central point of map. |
+| EsriConfig | Object | https://developers.arcgis.com/javascript/latest/api-reference/esri-config.html#properties-summary |
+| MapView.zoom | Integer | Zoom level of map. |
+| MapView.scale | Integer | Scale level of map. |
+| MapView.center | Array | Central point of map. |
+
+All configurations will be automatically set to EsriConfig and pre-processed with custom parameters. However, some properties will be handled by a handler and must match the specified format.
+
+- request interceptors
+
+```js
+{
+  "request": {
+    "interceptors": [
+      {
+        "urls",
+        "headers": {
+          // all header will be pass to request header
+        }
+      }
+    ]
+  }
+}
+```
 
 ## Categorizing Layer (*category.js*)
 

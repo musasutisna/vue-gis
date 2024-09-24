@@ -33,8 +33,41 @@ export const useConfigStore = defineStore('vuegis_config', () => {
     message.toToggleLoading({ display: false })
   }
 
+  /**
+   * Esri config handler.
+   */
+  const handler = {}
+
+  /**
+   * Handler to parsing config request.
+   *
+   * @param   object
+   * @param   object
+   * @return  void
+   */
+  handler.request = function (EsriConfig, request) {
+    if (request.interceptors && Array.isArray(request.interceptors)) {
+      for (var interceptIndex in request.interceptors) {
+        const intercept = request.interceptors[interceptIndex]
+        const headers = intercept.headers || {}
+
+        EsriConfig.request.interceptors.push({
+          urls: intercept.urls,
+          before: (params) => {
+            params.requestOptions.headers = headers
+          }
+        })
+      }
+    } else {
+      console.error(
+        'vuegis.stores.config.handler.request: could not set interceptors'
+      )
+    }
+  }
+
   return {
     src,
-    toLoadConfigFile
+    toLoadConfigFile,
+    handler
   }
 })
